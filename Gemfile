@@ -18,4 +18,4 @@ gem 'public_suffix', '~>3.0.3'
 gem 'toml-rb', '1.1.2'
 
 # license_scout 1.1 doesn't work with Ruby 2.2
-gem 'license_scout', '~> 1.0'
+gem 'license_scout', '~> 1.0.0'
