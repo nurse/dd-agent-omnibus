@@ -53,3 +53,7 @@ dependency 'uptime'
 dependency 'uuid'
 dependency 'prometheus-client'
 dependency 'pylint'
+
+# for effective cache
+dependency 'libkrb5'
+dependency 'unixodbc'
