@@ -21,16 +21,15 @@ build do
     command curl_command
     command "mv #{binary} #{Omnibus::Config.source_dir()}/datadog-agent/dd-agent/dist/#{target_binary}"
   else
+    target_binary = "process-agent"
 =begin
     binary = "process-agent-amd64-#{version}"
-    target_binary = "process-agent"
     url = "https://s3.amazonaws.com/datad0g-process-agent/#{binary}"
     curl_command = "curl -f #{url} -o #{binary}"
     command curl_command
     command "chmod +x #{binary}"
     command "mv #{binary} #{install_dir}/bin/#{target_binary}"
 =end
-    trace_agent_bin = "trace-agent"
     godir = "/usr/local/go"
     gobin = "#{godir}/go/bin/go"
     gopath = "#{Omnibus::Config.cache_dir}/src/#{name}"
@@ -45,5 +44,6 @@ build do
     }
     command "rake deps", :env => env, :cwd => "#{gopath}/src/github.com/DataDog/datadog-process-agent"
     command "rake install", :env => env, :cwd => "#{gopath}/src/github.com/DataDog/datadog-process-agent"
+    copy "#{gopath}/bin/#{target_binary}", "#{install_dir}/bin/#{target_binary}"
   end
 end
