@@ -6,6 +6,10 @@ process_agent_branch = ENV['PROCESS_AGENT_BRANCH']
 if process_agent_branch.nil? || process_agent_branch.empty?
     process_agent_branch = "master"
 end
+trace_agent_add_build_vars = true
+if ENV.has_key?('TRACE_AGENT_ADD_BUILD_VARS') && ENV['TRACE_AGENT_ADD_BUILD_VARS'] == 'false'
+  trace_agent_add_build_vars = false
+end
 default_version process_agent_branch
 
 build do
@@ -37,7 +41,6 @@ build do
       "GOPATH" => gopath,
       "GOROOT" => "#{godir}/go",
       "PATH" => "#{gopath}/bin:#{godir}/go/bin:#{ENV["PATH"]}",
-      "TRACE_AGENT_VERSION" => dd_agent_version, # used by 'make' in the trace-agent
       "TRACE_AGENT_ADD_BUILD_VARS" => trace_agent_add_build_vars.to_s(),
     }
     command "rake deps", :env => env, :cwd => "#{gopath}/src/github.com/DataDog/datadog-process-agent"
