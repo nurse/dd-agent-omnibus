@@ -31,7 +31,7 @@ build do
     command "mv #{binary} #{install_dir}/bin/#{target_binary}"
 =end
     godir = "/usr/local/go"
-    gobin = "#{godir}/go/bin/go"
+    gobin = "#{godir}/bin/go"
     gopath = "#{Omnibus::Config.cache_dir}/src/#{name}"
 
     agent_cache_dir = "#{gopath}/src/github.com/DataDog/datadog-agent"
@@ -40,8 +40,10 @@ build do
       "GOPATH" => gopath,
       "GOROOT" => "#{godir}/go",
       "PATH" => "#{gopath}/bin:#{godir}/go/bin:#{ENV["PATH"]}",
-      "TRACE_AGENT_ADD_BUILD_VARS" => trace_agent_add_build_vars.to_s(),
+      "TRACE_AGENT_ADD_BUILD_VARS" => trace_agent_add_build_vars.to_s,
     }
+    command "#{gobin} get -d github.com/DataDog/datadog-process-agent || :", :env => env # No need to pull latest from remote with `-u` here since the next command checks out and pulls latest
+    command "git checkout #{process_agent_branch} && git pull", :env => env, :cwd => "#{gopath}/src/github.com/DataDog/datadog-process-agent"
     command "rake deps", :env => env, :cwd => "#{gopath}/src/github.com/DataDog/datadog-process-agent"
     command "rake install", :env => env, :cwd => "#{gopath}/src/github.com/DataDog/datadog-process-agent"
     copy "#{gopath}/bin/#{target_binary}", "#{install_dir}/bin/#{target_binary}"
