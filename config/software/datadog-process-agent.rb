@@ -38,7 +38,7 @@ build do
 
     env = {
       "GOPATH" => gopath,
-      "GOROOT" => "#{godir}/go",
+      "GOROOT" => "#{godir}",
       "PATH" => "#{gopath}/bin:#{godir}/go/bin:#{ENV["PATH"]}",
       "TRACE_AGENT_ADD_BUILD_VARS" => trace_agent_add_build_vars.to_s,
     }
