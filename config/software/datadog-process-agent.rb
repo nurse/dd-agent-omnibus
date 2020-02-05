@@ -43,7 +43,7 @@ build do
       "TRACE_AGENT_ADD_BUILD_VARS" => trace_agent_add_build_vars.to_s,
     }
     command "#{gobin} get -d github.com/DataDog/datadog-process-agent || :", :env => env # No need to pull latest from remote with `-u` here since the next command checks out and pulls latest
-    command "git checkout #{process_agent_branch} && git pull", :env => env, :cwd => "#{gopath}/src/github.com/DataDog/datadog-process-agent"
+    command "git checkout #{process_agent_branch}", :env => env, :cwd => "#{gopath}/src/github.com/DataDog/datadog-process-agent"
     command "rake deps", :env => env, :cwd => "#{gopath}/src/github.com/DataDog/datadog-process-agent"
     command "rake install", :env => env, :cwd => "#{gopath}/src/github.com/DataDog/datadog-process-agent"
     copy "#{gopath}/bin/#{target_binary}", "#{install_dir}/bin/#{target_binary}"
